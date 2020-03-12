@@ -1,0 +1,31 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "Awesome bot for Discord",
+  "main": "MiBOT.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node MiBOT.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppabli/DiscordBOT.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ppabli/DiscordBOT/issues"
+  },
+  "homepage": "https://github.com/ppabli/DiscordBOT#readme",
+  "dependencies": {
+    "discord.js": "^12.0.2",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security",
+    "mariadb": "^2.2.0",
+    "simple-youtube-api": "^5.2.1",
+    "string-similarity": "^4.0.1"
+  }
+}
