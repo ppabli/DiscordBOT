@@ -45,11 +45,11 @@ exports.ready = (bot) => {
 
 exports.comandos = (bot, message) => {
 
-	if (message.content.indexOf(config.prefix) === 0) {
+	if (message.content.indexOf(config.PREFIX) === 0) {
 
 		const cmds = require('./funciones/cargarComandos').obtenerComandos();
 
-		let cont = message.content.slice(config.prefix.length).trim().split(/ +/g);
+		let cont = message.content.slice(config.PREFIX.length).trim().split(/ +/g);
 		let args = cont.slice(1);
 		let reason = args.join(" ").slice(22);
 		let comando = cont.shift().toLowerCase();

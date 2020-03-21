@@ -6,7 +6,7 @@ config = process.env;
 
 bot = new discord.Client();
 
-bot.login(config.token);
+bot.login(config.TOKEN);
 
 bot.on("ready", () => {
 
