@@ -1,9 +1,7 @@
-exports.run = async (bot, message, args, reason, pool) => {
+exports.run = async (bot, message, args, reason) => {
 
-	let listarMiembros = require('../funciones/listar');
-	listarMiembros.cargarListaMiembros(bot, message);
-
-	let listaMiembros = listarMiembros.obtenerListaMiembros();
+	let lista = require('../funciones/listar');
+	let listaMiembros = lista.obtenerListaMiembros(message.guild);
 
 	for (usuario in listaMiembros) {
 

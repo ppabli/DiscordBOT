@@ -6,7 +6,7 @@ exports.run = async (bot, message, args) => {
 
 		message.delete();
 
-		let embed = new discord.RichEmbed()
+		let embed = new discord.MessageEmbed()
 		.setAuthor("MiBOT")
 		.setDescription("Reinicio del servidor (L)")
 		.setColor(require ("../funciones/otros").generarColor())

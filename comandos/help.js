@@ -7,7 +7,7 @@ exports.run = async (bot, message) => {
 
 		let totalComandos = 0;
 
-		let embed = new discord.RichEmbed()
+		let embed = new discord.MessageEmbed()
 		.setAuthor("MiBOT")
 		.setColor(require ("../funciones/otros").generarColor())
 		.setFooter(`Solicitado por: ${message.author.tag}`);

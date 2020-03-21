@@ -1,4 +1,4 @@
-exports.run = async (bot, message, args, reason, conn) => {
+exports.run = async (bot, message, args, reason) => {
 
 	let listarMiembros = require('../funciones/listar');
 	listarMiembros.cargarListaMiembros(bot, message);
@@ -7,7 +7,7 @@ exports.run = async (bot, message, args, reason, conn) => {
 
 	for (usuario in listaMiembros) {
 
-		let embed = new discord.RichEmbed()
+		let embed = new discord.MessageEmbed()
 		.setAuthor("MiBOT")
 		.setColor(require ("../funciones/otros").generarColor())
 		.setDescription("Miembros de este servidor | Usuarios totales: " + message.member.guild.memberCount)

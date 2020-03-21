@@ -31,7 +31,7 @@ exports.run = async (bot, message, args, reason) => {
 
 					} else {
 
-						let embed = new discord.RichEmbed()
+						let embed = new discord.MessageEmbed()
 						.setAuthor("MiBOT")
 						.setColor(require ("../funciones/otros").generarColor())
 						.setDescription("Expulsiones")

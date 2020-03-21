@@ -1,4 +1,4 @@
-exports.run = async (bot, message, args, reason, pool) => {
+exports.run = async (bot, message, args, reason) => {
 
 	let serverQueue = require ("../musica/playlist").obtenerQueue(message);
 
@@ -12,7 +12,7 @@ exports.run = async (bot, message, args, reason, pool) => {
 
 		for (canciones in serverQueue.songs){
 
-			let embed = new discord.RichEmbed()
+			let embed = new discord.MessageEmbed()
 			.setAuthor("MiBOT")
 			.setTitle("Playlist de MiBOT")
 			.setColor(require ("../funciones/otros").generarColor())

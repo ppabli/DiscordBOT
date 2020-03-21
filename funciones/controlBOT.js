@@ -1,6 +1,6 @@
 exports.apagar = (bot, message) => {
 	
-	let apagadoEmbed = new Discord.RichEmbed()
+	let apagadoEmbed = new Discord.MessageEmbed()
 	.setAuthor("MiBOT")
 	.setDescription("Apagado del MiBOT")
 	.setColor(require ("../funciones/otros").generarColor())
@@ -21,7 +21,7 @@ exports.apagar = (bot, message) => {
 
 exports.reiniciar = (bot, message) => {
 	
-	let reinicioEmbed = new Discord.RichEmbed()
+	let reinicioEmbed = new Discord.MessageEmbed()
 	.setAuthor("MiBOT")
 	.setDescription("Reinicio del MiBOT")
 	.setColor(require ("../funciones/otros").generarColor())

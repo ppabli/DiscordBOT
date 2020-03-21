@@ -6,7 +6,7 @@ exports.run = async (bot, message, args) => {
 
 	let pingCorrecion = Date.now() - pingMensaje;
 
-	let pingEmbed = new discord.RichEmbed()
+	let pingEmbed = new discord.MessageEmbed()
 	.setColor(require ("../funciones/otros").generarColor())
 	.addField('Ping MiBOT: ', '~' + Math.floor(bot.ping) + 'ms')
 	.addField('Ping del mensaje: ', '~' + Math.round(pingCorrecion) + 'ms')

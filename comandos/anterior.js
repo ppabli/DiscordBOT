@@ -1,4 +1,4 @@
-exports.run = async (bot, message, args, reason, pool) => {
+exports.run = async (bot, message, args, reason) => {
 
 	let serverQueue = require ("../musica/playlist").obtenerQueue(message);
 	serverQueue.action = "anterior";

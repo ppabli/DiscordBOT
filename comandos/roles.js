@@ -8,7 +8,7 @@ exports.run = async (bot, message, args) => {
 
 	}
 
-	let rolEmbed = new discord.RichEmbed()
+	let rolEmbed = new discord.MessageEmbed()
 	.setAuthor("MiBOT")
 	.setColor(require ("../funciones/otros").generarColor())
 	.setTitle(`Rol: ${role.name}`)

@@ -15,14 +15,14 @@ exports.ready = (bot) => {
 
 	require('./funciones/cargarComandos').cargarComandos();
 
-	console.log(listar.obtenerResumen(bot));
-	console.log("Lista servidores: ");
-
 	var listaServidores = listar.obtenerListaServidores(bot);
+
+	console.log(`Estoy listo, conectado en ${listaServidores.length } servidor`);
+	console.log("Lista servidores: ");
 
 	for(server in listaServidores) {
 
-		console.log(listaServidores[server].name + " - " + listar.obtenerListaMiembros(bot, server).length);
+		console.log(listaServidores[server].name + " - " + listar.obtenerListaMiembros(listaServidores[server]).length);
 
 		//TODO Crear la base da datos para guardar los servidores del bot
 		//TODO Meter el servidor con sus datos en la base de datos
@@ -121,7 +121,7 @@ exports.comandos = (bot, message) => {
 			let comandoRecomendado = require('./funciones/recomendarComandos').recomendarComandos(message, comando);
 
 			//TODO Comprobar si el metodo de setTitle funciona correctamente
-			let embed = new Discord.RichEmbed()
+			let embed = new discord.MessageEmbed()
 			.setTitle("Problema")
 			.setDescription("No se reconoce el comando")
 			.setAuthor("MiBOT")
@@ -147,7 +147,7 @@ exports.nuevoMiembro = (bot, member) => {
 
 	pool.query("insert into usuarios values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
 
-	let nuevoMiembroEmbed = new Discord.RichEmbed()
+	let nuevoMiembroEmbed = new discord.MessageEmbed()
 	.setAuthor("MiBOT")
 	.setDescription("Nuevo Miembro")
 	.setColor("#000000")
@@ -160,7 +160,7 @@ exports.nuevoMiembro = (bot, member) => {
 
 exports.salidaMiembro = (bot, member) => {
 
-	let salidaMiembroEmbed = new Discord.RichEmbed()
+	let salidaMiembroEmbed = new discord.MessageEmbed()
 	.setAuthor("MiBOT")
 	.setDescription("Salida Miembro")
 	.setColor("#000000")

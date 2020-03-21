@@ -1,7 +1,7 @@
 const youtubeAPI = require("simple-youtube-api");
 const youtube = new youtubeAPI(config.GOOGLE_API_KEY);
 
-exports.run = async (bot, message, args, reason, pool) => {
+exports.run = async (bot, message, args, reason) => {
 
 	let serverQueue = require("../musica/playlist").obtenerQueue(message);
 
