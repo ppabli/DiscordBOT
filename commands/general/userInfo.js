@@ -3,9 +3,8 @@ run = (message) => {
 	let antiquity = TIME.transformMS(new Date().getTime() - message.member.joinedTimestamp);
 	let daysSinceCreation = new Date(message.member.joinedTimestamp);
 
-	let roles = [];
-
-	/* TODO Fix roles */
+	let roles = message.member.roles.cache.map(r => r.name);
+	roles.pop();
 
 	let embed = new DISCORD.MessageEmbed()
 		.setAuthor("MiBOT")
