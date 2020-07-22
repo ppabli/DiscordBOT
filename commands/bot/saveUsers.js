@@ -1,4 +1,4 @@
-run = async (message) => {
+run = message => {
 
 	listaMiembros = LIST.getMembers(message.guild);
 
@@ -8,7 +8,7 @@ run = async (message) => {
 
 	}
 
-	return;
+	return message.channel.send("All done");
 
 }
 

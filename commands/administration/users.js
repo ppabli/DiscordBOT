@@ -1,4 +1,4 @@
-run = async (message) => {
+run = message => {
 
 	let memberList = LIST.getMembers(message.guild);
 
@@ -25,7 +25,7 @@ run = async (message) => {
 
 	}
 
-	return;
+	return message.channel.send("All done!!");
 
 }
 

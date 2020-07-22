@@ -92,7 +92,7 @@ BOT.on("message", message => {
 
 			} else {
 
-				for (userID in commands[comando].conf.usersID) {
+				for (userID in commands[command].conf.usersID) {
 
 					if (message.author.id === commands[command].conf.usersID[userID]) {
 
@@ -112,7 +112,7 @@ BOT.on("message", message => {
 
 				commands[command].run(message);
 
-				POOL.query("select codigo from usuarios where id = '" + message.author.id + "'").then((res) => pool.query("insert into comandos values (" + 0 + ", '" + comando + "', '" +  res[0].codigo + "', '" + message.guild.name + "', '" + message.channel.name + "',  now())"));
+				POOL.query("select codigo from usuarios where id = '" + message.author.id + "'").then((res) => POOL.query("insert into comandos values (" + 0 + ", '" + command + "', '" +  res[0].codigo + "', '" + message.guild.name + "', '" + message.channel.name + "',  now())"));
 
 				return;
 
@@ -307,8 +307,6 @@ BOT.on("guildMemberAdd", member => {
 
 	//TODO Meter el la referencia al servidor
 
-	POOL.query("insert into usuarios values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
-
 	let embed = new DISCORD.MessageEmbed()
 		.setAuthor("MiBOT")
 		.setDescription("Nuevo Miembro")
@@ -318,6 +316,8 @@ BOT.on("guildMemberAdd", member => {
 		.setFooter(`Solicitado por: MiBOT#2602`);
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+
+	POOL.query("insert into usuarios values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
 
 });
 
@@ -333,8 +333,8 @@ BOT.on("guildMemberRemove", member => {
 
 	//TODO Meter el la referencia al servidor
 
-	POOL.query("delete from usuarios where id = '" + member.id + "'");
-
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+
+	POOL.query("delete from usuarios where id = '" + member.id + "'");
 
 });

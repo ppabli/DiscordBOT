@@ -1,4 +1,4 @@
-run = (message) => {
+run = message => {
 
 	let rol = message.mentions.roles.first();
 

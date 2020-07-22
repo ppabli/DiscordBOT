@@ -1,6 +1,6 @@
-run = (message) => {
+run = message => {
 
-	let antiquity = TIME.transformMS(BOT.uptime)
+	let antiquity = TIME.transformMS(BOT.uptime);
 	let daysSinceCreation = new Date(new Date().getTime() - BOT.uptime);
 
 	let tiempoEmbed = new DISCORD.MessageEmbed()

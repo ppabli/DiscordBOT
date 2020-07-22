@@ -1,4 +1,4 @@
-run = async (message, content) => {
+run = message => {
 
 	if (message.member.hasPermission("ADMINISTRATOR")) {
 

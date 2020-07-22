@@ -69,7 +69,7 @@ run = async (message) => {
 
 		}
 
-		embed.setDescription("MiBOT help | Category: " + commands[command].conf.category + "\n\n Total commands: " + totalCommands)
+		embed.setDescription("MiBOT help | Category: " + commands[command].conf.category + "\n\n Total commands: " + totalCommands);
 
 		if (totalCommands === 0) {
 
@@ -83,7 +83,7 @@ run = async (message) => {
 
 	}
 
-	return;
+	return message.channel.send("All done");
 
 }
 

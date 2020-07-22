@@ -1,4 +1,4 @@
-run = async (message) => {
+run = message => {
 
 	return message.channel.send("Hello bru!!");
 

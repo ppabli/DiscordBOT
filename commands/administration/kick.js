@@ -1,8 +1,8 @@
-run = async (message) => {
+run = async message => {
 
 	if (message.member.hasPermission("KICK_MEMBERS", {checkAdmin: true, checkOwner: true})){
 
-		if (message.mentions.members.size != 0){
+		if (message.mentions.members.size != 0) {
 
 			let content = message.content.slice(CONFIG.PREFIX.length).trim().split(/ +/g);
 			let reason = content.slice((1 + message.mentions.users.size)).join(" ").replace(/<@.*>/, "");
@@ -27,12 +27,12 @@ run = async (message) => {
 
 						await users[user].kick(reason);
 
-						BOT.guilds.cache.find(g => g.id === message.guild.id).channels.cache.find(c => c.id === "734392551729266689").send(embed);
+						return BOT.guilds.cache.find(g => g.id === message.guild.id).channels.cache.find(c => c.id === "734392551729266689").send(embed);
 
 					} catch (error) {
 
-						console.log(error)
-						return message.channel.send("Error")
+						console.log(error);
+						return message.channel.send("Error");
 
 					}
 

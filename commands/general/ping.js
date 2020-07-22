@@ -1,4 +1,4 @@
-run = (message) => {
+run = message => {
 
 	let messagePing = Date.now();
 

@@ -1,4 +1,4 @@
-run = (message) => {
+run = message => {
 
 	let antiquity = TIME.transformMS(new Date().getTime() - message.member.joinedTimestamp);
 	let daysSinceCreation = new Date(message.member.joinedTimestamp);

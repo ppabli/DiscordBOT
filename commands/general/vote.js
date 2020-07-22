@@ -1,4 +1,4 @@
-run = (message) => {
+run = message => {
 
 	message.react("✅");
 	message.react("❌");

@@ -1,4 +1,4 @@
-run = async (message) => {
+run = message => {
 
 	let messageArray = message.content.split(" ");
 	let args = messageArray.slice(1);
