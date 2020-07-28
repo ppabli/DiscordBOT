@@ -108,7 +108,7 @@ BOT.on("message", message => {
 
 			if (haveID === true && havePermits === true) {
 
-				console.log("Comando: " + command + " | Autor: " + message.author.tag + " | Servidor: " + message.guild.name + " | Canal: " + message.channel.name + " | Hora: " + TIME.getActualHour() + " | Dia: " + TIME.getActualDay());
+				console.log("Command: " + command + " | Author: " + message.author.tag + " | Server: " + message.guild.name + " | Channel: " + message.channel.name + " | Hour: " + TIME.getActualHour() + " | Day: " + TIME.getActualDay());
 
 				commands[command].run(message);
 
@@ -193,11 +193,11 @@ BOT.on("message", message => {
 				.setColor(OTHER.generateColor())
 				.setTitle("Problem")
 				.setDescription("Unkown command")
-				.setAuthor("MiBOT")
+				.setAuthor(BOT.user.tag)
 				.addField("Command do not exists:", userCommand, true)
 				.addField("Recommended command:", "```-" + recommend + "```", false)
 				.addField("To see all commands use:", "```-help```", true)
-				.setFooter(`Requested by: ${message.author.tag}`);
+				.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
 
 			return message.channel.send(embed);
 
@@ -217,8 +217,8 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 
 			if (roles[rol].emojiName == reaction.emoji.name) {
 
-				let newRole = reaction.message.guild.roles.cache.find(role => role.id == roles[rol].rolCode);
-				let member = reaction.message.guild.members.cache.find(member => member.id == user.id);
+				let newRole = reaction.message.guild.roles.cache.find(r => r.id == roles[rol].rolCode);
+				let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
 				if (newRole && member) {
 
@@ -238,7 +238,7 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === '586998830164213772');
 			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === '734460546354774119');
 
-			let member = reaction.message.guild.members.cache.find(member => member.id == user.id);
+			let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
 			if (memberRole && noMemberRole && member) {
 
@@ -264,8 +264,8 @@ BOT.on('messageReactionRemove', async (reaction, user) => {
 
 			if (roles[rol].emojiName == reaction.emoji.name) {
 
-				let newRole = reaction.message.guild.roles.cache.find(role => role.id == roles[rol].rolCode);
-				let member = reaction.message.guild.members.cache.find(member => member.id == user.id);
+				let newRole = reaction.message.guild.roles.cache.find(r => r.id == roles[rol].rolCode);
+				let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
 				if (newRole && member) {
 
@@ -300,6 +300,77 @@ BOT.on('messageReactionRemove', async (reaction, user) => {
 
 });
 
+BOT.on("roleCreate", rol => {
+
+	let embed = new DISCORD.MessageEmbed()
+		.setColor(OTHER.generateColor())
+		.setTitle("Rol created")
+		.setDescription(`A rol has been created | ID: ${rol.id} | Name: <@&${rol.id}>`)
+		.setAuthor(BOT.user.tag)
+		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+
+	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+
+});
+
+BOT.on("roleDelete", rol => {
+
+	let embed = new DISCORD.MessageEmbed()
+		.setColor(OTHER.generateColor())
+		.setTitle("Rol deleted")
+		.setDescription(`A rol has been deleted | ID: ${rol.id} | Name: #${rol.name}`)
+		.setAuthor(BOT.user.tag)
+		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+
+	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+
+});
+
+BOT.on("roleUpdate", (oldRol, newRol) => {
+
+	let embed = new DISCORD.MessageEmbed()
+		.setColor(OTHER.generateColor())
+		.setTitle("Rol permissions changed")
+		.setAuthor(BOT.user.tag)
+		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+
+	if (oldRol.permissions !== newRol.permissions) {
+
+		let oldPerms = oldRol.permissions.serialize();
+		let newPerms = newRol.permissions.serialize();
+
+		let permUpdated = [];
+
+		for (let [key, element] of Object.entries(oldPerms)) {
+
+			if (newPerms[key] !== element) {
+
+				permUpdated.push(key);
+
+			}
+
+		}
+
+		if (oldRol.permissions > newRol.permissions) {
+
+			embed.addField(`A rol has been updated | ID: ${newRol.id} | Name: <@&${newRol.id}>`, `**<@&${newRol.id}> has lost the ${permUpdated.join(", ")} permission**`);
+
+		} else if (oldRol.permissions < newRol.permissions) {
+
+			embed.addField(`A rol has been updated | ID: ${newRol.id} | Name: <@&${newRol.id}>`, `**<@&${newRol.id}> has been given the ${permUpdated.join(", ")} permission**`);
+
+		} else {
+
+			embed.setDescription(`A rol has been updated | ID: ${newRol.id} | Name: <@&${newRol.id}>`);
+
+		}
+
+	}
+
+	BOT.guilds.cache.find(g => g.id === newRol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+
+});
+
 BOT.on("guildMemberAdd", member => {
 
 	let role = member.guild.roles.cache.find(r => r.id === "734460546354774119");
@@ -308,12 +379,12 @@ BOT.on("guildMemberAdd", member => {
 	//TODO Meter el la referencia al servidor
 
 	let embed = new DISCORD.MessageEmbed()
-		.setAuthor("MiBOT")
-		.setDescription("Nuevo Miembro")
+		.setAuthor(BOT.user.tag)
+		.setDescription("New member")
 		.setColor(OTHER.generateColor())
-		.addField("Nombre del usuario:", member.user.tag)
-		.addField("ID del usuario:", member.id)
-		.setFooter(`Solicitado por: MiBOT#2602`);
+		.addField("User name:", member.user.tag)
+		.addField("User ID:", member.id)
+		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
 
@@ -324,12 +395,12 @@ BOT.on("guildMemberAdd", member => {
 BOT.on("guildMemberRemove", member => {
 
 	let embed = new DISCORD.MessageEmbed()
-		.setAuthor("MiBOT")
-		.setDescription("Salida Miembro")
+		.setAuthor(BOT.user.tag)
+		.setDescription("Exit member")
 		.setColor(OTHER.generateColor())
-		.addField("Nombre del usuario:", member.user.tag)
-		.addField("ID del usuario:", member.id)
-		.setFooter(`Solicitado por: MiBOT#2602`);
+		.addField("User name:", member.user.tag)
+		.addField("User ID:", member.id)
+		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
 	//TODO Meter el la referencia al servidor
 

@@ -8,17 +8,17 @@ run = message => {
 		let daysSinceCreation = new Date(rol.createdAt);
 
 		let rolEmbed = new DISCORD.MessageEmbed()
-			.setAuthor("MiBOT")
+			.setAuthor(BOT.user.tag)
 			.setColor(OTHER.generateColor())
 			.setTitle(`Rol: ${rol.name}`)
 			.addField('Members count: ', rol.members.size)
 			.addField('Color (HEX): ', rol.hexColor)
 			.addField('Age', `${antiquity.years} years - ${antiquity.days} days - ${antiquity.hours} hours - ${antiquity.minutes} minutes - ${antiquity.seconds} seconds`)
-			.addField('Since: ', `${daysSinceCreation.getFullYear()}-${daysSinceCreation.getMonth() + 1 < 10 ? '0' + (daysSinceCreation.getMonth() + 1): daysSinceCreation.getMonth() + 1}-${daysSinceCreation.getDate() < 10 ? '0' + daysSinceCreation.getDate(): daysSinceCreation.getDate()} | ${daysSinceCreation.getHours() < 10 ? '0' + daysSinceCreation.getHours(): daysSinceCreation.getHours()}:${daysSinceCreation.getMinutes() < 10 ? '0' + daysSinceCreation.getMinutes() :daysSinceCreation.getMinutes()}:${daysSinceCreation.getSeconds() < 10 ? '0' + daysSinceCreation.getSeconds():daysSinceCreation.getSeconds()}`)
+			.addField('Since: ', daysSinceCreation.toUTCString())
 			.addField('Editable: ', rol.editable)
 			.addField('Administrable: ', rol.managed)
 			.addField('Rol ID: ', rol.id)
-			.setFooter(`Requested by: ${message.author.tag}`);
+			.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
 
 		return message.channel.send(rolEmbed);
 

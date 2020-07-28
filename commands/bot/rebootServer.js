@@ -6,7 +6,7 @@ run = async message => {
 
 	} else {
 
-		return message.channel.send("No puedes apagar el servidor!!");
+		return message.channel.send("You can not reboot the server");
 
 	}
 

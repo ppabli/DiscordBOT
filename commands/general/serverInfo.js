@@ -4,7 +4,7 @@ run = (message) => {
 	let daysSinceCreation = new Date(message.guild.joinedTimestamp);
 
 	let embed = new DISCORD.MessageEmbed()
-		.setAuthor("MiBOT")
+		.setAuthor(BOT.user.tag)
 		.setDescription("Server information")
 		.setColor(OTHER.generateColor())
 		.addField('Server name: ', message.guild.name)
@@ -13,8 +13,8 @@ run = (message) => {
 		.addField('Server owner ID:', message.guild.ownerID)
 		.addField('Server member count:', message.guild.memberCount)
 		.addField('Since', `${antiquity.years} years - ${antiquity.days} days - ${antiquity.hours} hours - ${antiquity.minutes} minutes - ${antiquity.seconds} seconds`)
-		.addField('Created: ', `${daysSinceCreation.getFullYear()}-${daysSinceCreation.getMonth() + 1 < 10 ? '0' + (daysSinceCreation.getMonth() + 1): daysSinceCreation.getMonth() + 1}-${daysSinceCreation.getDate() < 10 ? '0' + daysSinceCreation.getDate(): daysSinceCreation.getDate()} | ${daysSinceCreation.getHours() < 10 ? '0' + daysSinceCreation.getHours(): daysSinceCreation.getHours()}:${daysSinceCreation.getMinutes() < 10 ? '0' + daysSinceCreation.getMinutes() :daysSinceCreation.getMinutes()}:${daysSinceCreation.getSeconds() < 10 ? '0' + daysSinceCreation.getSeconds():daysSinceCreation.getSeconds()}`)
-		.setFooter(`Requested by: ${message.author.tag}`);
+		.addField('Created: ', daysSinceCreation.toUTCString())
+		.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
 
 	return message.channel.send(embed);
 

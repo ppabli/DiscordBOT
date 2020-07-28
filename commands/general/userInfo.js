@@ -7,7 +7,7 @@ run = message => {
 	roles.pop();
 
 	let embed = new DISCORD.MessageEmbed()
-		.setAuthor("MiBOT")
+		.setAuthor(BOT.user.tag)
 		.setDescription("User information")
 		.setColor(OTHER.generateColor())
 		.addField('User name: ', message.member.user.username)
@@ -15,8 +15,8 @@ run = message => {
 		.addField('User TAG: ', message.member.user.tag)
 		.addField('Roles:', roles.length != 0 ? roles.join(', ') : '0 roles')
 		.addField('Here since', `${antiquity.years} years - ${antiquity.days} days - ${antiquity.hours} hours - ${antiquity.minutes} minutes - ${antiquity.seconds} seconds`)
-		.addField('Joined this server: ', `${daysSinceCreation.getFullYear()}-${daysSinceCreation.getMonth() + 1 < 10 ? '0' + (daysSinceCreation.getMonth() + 1): daysSinceCreation.getMonth() + 1}-${daysSinceCreation.getDate() < 10 ? '0' + daysSinceCreation.getDate(): daysSinceCreation.getDate()} | ${daysSinceCreation.getHours() < 10 ? '0' + daysSinceCreation.getHours(): daysSinceCreation.getHours()}:${daysSinceCreation.getMinutes() < 10 ? '0' + daysSinceCreation.getMinutes() :daysSinceCreation.getMinutes()}:${daysSinceCreation.getSeconds() < 10 ? '0' + daysSinceCreation.getSeconds():daysSinceCreation.getSeconds()}`)
-		.setFooter(`Requested by: ${message.member.user.tag}`);
+		.addField('Joined this server: ', daysSinceCreation.toUTCString())
+		.setFooter(`Requested by: ${message.member.user.tag} | ${new Date().toUTCString()}`);
 
 	return message.channel.send(embed);
 

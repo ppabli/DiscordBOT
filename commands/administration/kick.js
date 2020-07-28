@@ -14,14 +14,14 @@ run = async message => {
 				for (user in users) {
 
 					let embed = new DISCORD.MessageEmbed()
-						.setAuthor("MiBOT")
+						.setAuthor(BOT.user.tag)
 						.setColor(OTHER.generateColor())
 						.setDescription("Bans")
 						.addField("Banned: ", `${users[user].user.username} | ID ${users[user].user.id}`)
 						.addField("Banned by: ", `<@${message.author.tag}> | ID ${message.author.id}`)
 						.addField("Channel: ", message.channel)
 						.addField("Reason: ", reason)
-						.setFooter(`Requested by: MiBOT`);
+						.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
 					try {
 

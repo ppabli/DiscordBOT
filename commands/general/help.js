@@ -9,9 +9,9 @@ run = async (message) => {
 		let totalCommands = 0;
 
 		let embed = new DISCORD.MessageEmbed()
-			.setAuthor("MiBOT")
+			.setAuthor(BOT.user.tag)
 			.setColor(OTHER.generateColor())
-			.setFooter(`Requested by: ${message.author.tag}`);
+			.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
 
 		if (commands[command]) {
 
