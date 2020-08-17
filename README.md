@@ -1,1 +1,1 @@
-Readme file
+MiBOT is an open source BOT for Discord.

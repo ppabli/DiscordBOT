@@ -14,8 +14,8 @@ run = message => {
 
 conf = {
 
-	command: "restartBot",
-	help: "Restart MiBOT",
+	command: "rebootBot",
+	help: "Reboot MiBOT",
 	permits: ["ADMINISTRATOR"],
 	usersID: ["296687569503256587"],
 	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]

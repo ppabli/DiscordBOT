@@ -1,10 +1,10 @@
 run = message => {
 
-	listaMiembros = LIST.getMembers(message.guild);
+	userList = LIST.getMembers(message.guild);
 
-	for (usuario in listaMiembros) {
+	for (user in userList) {
 
-		POOL.query("insert into usuarios values (" + 0 + ", '" + listaMiembros[usuario].user.username + "', '" + listaMiembros[usuario].user.tag + "', '" + listaMiembros[usuario].user.id + "', now())");
+		POOL.query("insert into users values (" + 0 + ", '" + userList[user].user.username + "', '" + userList[user].user.tag + "', '" + userList[user].user.id + "', now())");
 
 	}
 

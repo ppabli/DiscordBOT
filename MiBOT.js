@@ -112,7 +112,7 @@ BOT.on("message", message => {
 
 				commands[command].run(message);
 
-				POOL.query("select codigo from usuarios where id = '" + message.author.id + "'").then((res) => POOL.query("insert into comandos values (" + 0 + ", '" + command + "', '" +  res[0].codigo + "', '" + message.guild.name + "', '" + message.channel.name + "',  now())"));
+				POOL.query("select code from users where userID = '" + message.author.id + "'").then((res) => POOL.query("insert into commands values (" + 0 + ", '" + command + "', '" +  res[0].code + "', '" + message.guild.name + "', '" + message.channel.name + "',  now())"));
 
 				return;
 
@@ -388,7 +388,7 @@ BOT.on("guildMemberAdd", member => {
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
 
-	POOL.query("insert into usuarios values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
+	POOL.query("insert into users values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
 
 });
 
@@ -406,6 +406,6 @@ BOT.on("guildMemberRemove", member => {
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
 
-	POOL.query("delete from usuarios where id = '" + member.id + "'");
+	POOL.query("delete from users where userID = '" + member.id + "'");
 
 });

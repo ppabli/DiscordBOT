@@ -1,4 +1,4 @@
-run = async (message) => {
+run = message => {
 
 	let commands = COMMANDS.getComands();
 
