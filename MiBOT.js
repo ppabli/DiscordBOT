@@ -5,10 +5,10 @@ CONFIG = process.env;
 
 POOL = MARIADB.createPool({
 
-	host: CONFIG.DDBBHost,
-	user: CONFIG.DDBBUser,
-	password: CONFIG.DDBBPassword,
-	database: CONFIG.DDBBBase
+	host: CONFIG.DDBB_HOST,
+	user: CONFIG.DDBB_USER,
+	password: CONFIG.DDBB_PASSWORD,
+	database: CONFIG.DDBB_BASE
 
 });
 
@@ -29,9 +29,6 @@ BOT.on('ready', async () => {
 	for(server in serverList) {
 
 		console.log(serverList[server].name + " - " + LIST.getMembers(serverList[server]).length);
-
-		//TODO Crear la base da datos para guardar los servidores del bot
-		//TODO Meter el servidor con sus datos en la base de datos
 
 	}
 
@@ -211,7 +208,7 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 
 	let roles = ROLES.getAutoRoles();
 
-	if (reaction.message.id === '714182849804369922') {
+	if (reaction.message.id == CONFIG.ROLES_MESSAGE_ID) {
 
 		for (rol in roles) {
 
@@ -231,7 +228,7 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 
 		}
 
-	} else if (reaction.message.id === '734458807492673536') {
+	} else if (reaction.message.id === CONFIG.WELCOME_MESSAGE_ID) {
 
 		if (reaction.emoji.name == '👍🏻') {
 
@@ -258,7 +255,7 @@ BOT.on('messageReactionRemove', async (reaction, user) => {
 
 	let roles = ROLES.getAutoRoles();
 
-	if (reaction.message.id === '714182849804369922') {
+	if (reaction.message.id == CONFIG.ROLES_MESSAGE_ID) {
 
 		for (rol in roles) {
 
@@ -278,7 +275,7 @@ BOT.on('messageReactionRemove', async (reaction, user) => {
 
 		}
 
-	} else if (reaction.message.id === '734458807492673536') {
+	} else if (reaction.message.id === CONFIG.WELCOME_MESSAGE_ID) {
 
 		if (reaction.emoji.name == '👍🏻') {
 
@@ -309,7 +306,7 @@ BOT.on("roleCreate", rol => {
 		.setAuthor(BOT.user.tag)
 		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
-	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
 });
 
@@ -322,7 +319,7 @@ BOT.on("roleDelete", rol => {
 		.setAuthor(BOT.user.tag)
 		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
-	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
 });
 
@@ -367,7 +364,7 @@ BOT.on("roleUpdate", (oldRol, newRol) => {
 
 	}
 
-	BOT.guilds.cache.find(g => g.id === newRol.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+	BOT.guilds.cache.find(g => g.id === newRol.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
 });
 
@@ -386,13 +383,35 @@ BOT.on("guildMemberAdd", member => {
 		.addField("User ID:", member.id)
 		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
 
-	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
 	POOL.query("insert into users values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
 
 });
 
-BOT.on("guildMemberRemove", member => {
+BOT.on("guildMemberRemove", async member => {
+
+	let channels = member.guild.channels.cache.filter(c => c.messages != undefined && (c.id == CONFIG.WELCOME_CHANNEL_ID || c.id == CONFIG.ROLES_CHANNEL_ID)).map(c => c);
+
+	for (channel in channels) {
+
+		let messages = await channels[channel].messages.fetch();
+
+		let finalMessages = messages.filter(m => m.id == CONFIG.WELCOME_MESSAGE_ID || m.id == CONFIG.ROLES_MESSAGE_ID).map(m => m);
+
+		for (message in finalMessages) {
+
+			let reactions = finalMessages[message].reactions.cache.map(r => r);
+
+			for (reaction in reactions) {
+
+				await reactions[reaction].users.remove(member.id);
+
+			}
+
+		}
+
+	}
 
 	let embed = new DISCORD.MessageEmbed()
 		.setAuthor(BOT.user.tag)
@@ -404,7 +423,7 @@ BOT.on("guildMemberRemove", member => {
 
 	//TODO Meter el la referencia al servidor
 
-	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id === '734392551729266689').send(embed);
+	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
 	POOL.query("delete from users where userID = '" + member.id + "'");
 
