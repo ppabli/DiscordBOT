@@ -31,7 +31,11 @@ if (OS.platform() === 'win32') {
 }
 
 /* Our functionss */
+sleep = ms => {
 
+	return new Promise(resolve => setTimeout(resolve, ms));
+
+}
 barAnimation = async (duration, text) => {
 
 	let i = 0;
