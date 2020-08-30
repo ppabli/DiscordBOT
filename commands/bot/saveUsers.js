@@ -17,7 +17,7 @@ conf = {
 	command: "saveUsers",
 	help: "Save server users in the database",
 	permits: ["ADMINISTRATOR"],
-	usersID: [],
+	usersID: [CONFIG.OWNER_ID],
 	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
 
 
