@@ -373,8 +373,6 @@ BOT.on("guildMemberAdd", member => {
 	let role = member.guild.roles.cache.find(r => r.id === "734460546354774119");
 	member.roles.add(role);
 
-	//TODO Meter el la referencia al servidor
-
 	let embed = new DISCORD.MessageEmbed()
 		.setAuthor(BOT.user.tag)
 		.setDescription("New member")
@@ -420,8 +418,6 @@ BOT.on("guildMemberRemove", async member => {
 		.addField("User name:", member.user.tag)
 		.addField("User ID:", member.id)
 		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
-
-	//TODO Meter el la referencia al servidor
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
