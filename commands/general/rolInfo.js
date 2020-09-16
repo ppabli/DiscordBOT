@@ -18,7 +18,8 @@ run = message => {
 			.addField('Editable: ', rol.editable)
 			.addField('Administrable: ', rol.managed)
 			.addField('Rol ID: ', rol.id)
-			.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
+			.setFooter(`Requested by: ${message.author.tag}`)
+			.setTimestamp();
 
 		return message.channel.send(rolEmbed);
 

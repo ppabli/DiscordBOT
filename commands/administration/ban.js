@@ -23,7 +23,8 @@ run = async message => {
 						.addField("Channel: ", message.channel)
 						.addField("Reason: ", reason)
 						.addField("Duration", days)
-						.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+						.setFooter(`Requested by: ${BOT.user.tag}`)
+						.setTimestamp();
 
 					try {
 

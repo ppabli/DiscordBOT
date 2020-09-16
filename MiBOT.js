@@ -194,7 +194,8 @@ BOT.on("message", message => {
 				.addField("Command do not exists:", userCommand, true)
 				.addField("Recommended command:", "```-" + recommend + "```", false)
 				.addField("To see all commands use:", "```-help```", true)
-				.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
+				.setFooter(`Requested by: ${message.author.tag}`)
+				.setTimestamp();
 
 			return message.channel.send(embed);
 
@@ -304,7 +305,8 @@ BOT.on("roleCreate", rol => {
 		.setTitle("Rol created")
 		.setDescription(`A rol has been created | ID: ${rol.id} | Name: <@&${rol.id}>`)
 		.setAuthor(BOT.user.tag)
-		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${BOT.user.tag}`)
+		.setTimestamp();
 
 	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
@@ -317,7 +319,8 @@ BOT.on("roleDelete", rol => {
 		.setTitle("Rol deleted")
 		.setDescription(`A rol has been deleted | ID: ${rol.id} | Name: #${rol.name}`)
 		.setAuthor(BOT.user.tag)
-		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${BOT.user.tag}`)
+		.setTimestamp();
 
 	BOT.guilds.cache.find(g => g.id === rol.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
@@ -329,7 +332,8 @@ BOT.on("roleUpdate", (oldRol, newRol) => {
 		.setColor(OTHER.generateColor())
 		.setTitle("Rol permissions changed")
 		.setAuthor(BOT.user.tag)
-		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${BOT.user.tag}`)
+		.setTimestamp();
 
 	if (oldRol.permissions !== newRol.permissions) {
 
@@ -379,7 +383,8 @@ BOT.on("guildMemberAdd", member => {
 		.setColor(OTHER.generateColor())
 		.addField("User name:", member.user.tag)
 		.addField("User ID:", member.id)
-		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${BOT.user.tag}`)
+		.setTimestamp();
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
@@ -417,7 +422,8 @@ BOT.on("guildMemberRemove", async member => {
 		.setColor(OTHER.generateColor())
 		.addField("User name:", member.user.tag)
 		.addField("User ID:", member.id)
-		.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${BOT.user.tag}`)
+		.setTimestamp();
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 

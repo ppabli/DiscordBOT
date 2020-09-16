@@ -9,7 +9,8 @@ run = message => {
 		.setColor(OTHER.generateColor())
 		.addField('MiBOT PING: ', `~ ${Math.floor(BOT.ws.ping)} ms`)
 		.addField('Message PING: ', `~ ${Math.round(BOT.ws.ping + revisionPing)} ms`)
-		.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${message.author.tag}`)
+		.setTimestamp();
 
 	return message.channel.send(pingEmbed);
 

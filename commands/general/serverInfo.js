@@ -14,7 +14,8 @@ run = message => {
 		.addField('Server member count:', message.guild.memberCount)
 		.addField('Since', `${antiquity.years} years - ${antiquity.days} days - ${antiquity.hours} hours - ${antiquity.minutes} minutes - ${antiquity.seconds} seconds`)
 		.addField('Created: ', daysSinceCreation.toUTCString())
-		.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${message.author.tag}`)
+		.setTimestamp();
 
 	return message.channel.send(embed);
 

@@ -11,7 +11,8 @@ run = message => {
 		let embed = new DISCORD.MessageEmbed()
 			.setAuthor(BOT.user.tag)
 			.setColor(OTHER.generateColor())
-			.setFooter(`Requested by: ${message.author.tag} | ${new Date().toUTCString()}`);
+			.setFooter(`Requested by: ${message.author.tag}`)
+			.setTimestamp();
 
 		if (commands[command]) {
 

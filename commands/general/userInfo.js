@@ -16,7 +16,8 @@ run = message => {
 		.addField('Roles:', roles.length != 0 ? roles.join(', ') : '0 roles')
 		.addField('Here since', `${antiquity.years} years - ${antiquity.days} days - ${antiquity.hours} hours - ${antiquity.minutes} minutes - ${antiquity.seconds} seconds`)
 		.addField('Joined this server: ', daysSinceCreation.toUTCString())
-		.setFooter(`Requested by: ${message.member.user.tag} | ${new Date().toUTCString()}`);
+		.setFooter(`Requested by: ${message.author.tag}`)
+		.setTimestamp();
 
 	return message.channel.send(embed);
 

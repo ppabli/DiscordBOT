@@ -21,7 +21,8 @@ run = async message => {
 						.addField("Banned by: ", `<@${message.author.tag}> | ID ${message.author.id}`)
 						.addField("Channel: ", message.channel)
 						.addField("Reason: ", reason)
-						.setFooter(`Requested by: ${BOT.user.tag} | ${new Date().toUTCString()}`);
+						.setFooter(`Requested by: ${BOT.user.tag}`)
+						.setTimestamp();
 
 					try {
 
