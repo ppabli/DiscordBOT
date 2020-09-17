@@ -1,0 +1,13 @@
+Install:
+
+	nodejs
+	mariadb-server
+
+Once we have installed nodejs clone the repository and then:
+
+	npm install
+
+Configure the mariadb
+
+	use the script.sql file
+	configure mariadb to remote connection
