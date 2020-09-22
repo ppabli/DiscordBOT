@@ -200,46 +200,33 @@ BOT.on("message", async message => {
 
 BOT.on('messageReactionAdd', async (reaction, user) => {
 
-	let roles = ROLES.getAutoRoles();
+	let messages = MESSAGES.getMessages();
 
-	if (reaction.message.id == CONFIG.ROLES_MESSAGE_ID) {
+	if (messages[reaction.message.channel.id]) {
 
-		for (rol in roles) {
+		for (rol in messages[reaction.message.channel.id]["fields"]) {
 
-			if (roles[rol].emojiName == reaction.emoji.name) {
+			if (messages[reaction.message.channel.id]["fields"][rol]["emojiName"] == reaction.emoji.name) {
 
-				let newRole = reaction.message.guild.roles.cache.find(r => r.id == roles[rol].rolCode);
+				let newRole = reaction.message.guild.roles.cache.find(r => r.id == messages[reaction.message.channel.id]["fields"][rol]["rolCode"]);
 				let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
-				if (newRole && member) {
+				if (newRole.id == CONFIG.ROL_MEMBER) {
+
+					let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
 
 					member.roles.add(newRole);
-					break;
+					member.roles.remove(noMemberRole);
+
+				} else {
+
+					member.roles.add(newRole);
 
 				}
 
 			}
 
 		}
-
-	} else if (reaction.message.id === CONFIG.WELCOME_MESSAGE_ID) {
-
-		if (reaction.emoji.name == '👍🏻') {
-
-			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
-			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
-
-			let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
-
-			if (memberRole && noMemberRole && member) {
-
-				member.roles.add(memberRole);
-				member.roles.remove(noMemberRole);
-
-			}
-
-		}
-
 
 	}
 
@@ -247,41 +234,29 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 
 BOT.on('messageReactionRemove', async (reaction, user) => {
 
-	let roles = ROLES.getAutoRoles();
+	let messages = MESSAGES.getMessages();
 
-	if (reaction.message.id == CONFIG.ROLES_MESSAGE_ID) {
+	if (messages[reaction.message.channel.id]) {
 
-		for (rol in roles) {
+		for (rol in messages[reaction.message.channel.id]["fields"]) {
 
-			if (roles[rol].emojiName == reaction.emoji.name) {
+			if (messages[reaction.message.channel.id]["fields"][rol].emojiName == reaction.emoji.name) {
 
-				let newRole = reaction.message.guild.roles.cache.find(r => r.id == roles[rol].rolCode);
+				let newRole = reaction.message.guild.roles.cache.find(r => r.id == messages[reaction.message.channel.id]["fields"][rol].rolCode);
 				let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
-				if (newRole && member) {
+				if (newRole.id == CONFIG.ROL_MEMBER) {
+
+					let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
+
+					member.roles.add(noMemberRole);
+					member.roles.remove(newRole);
+
+				} else {
 
 					member.roles.remove(newRole);
-					break;
 
 				}
-
-			}
-
-		}
-
-	} else if (reaction.message.id === CONFIG.WELCOME_MESSAGE_ID) {
-
-		if (reaction.emoji.name == '👍🏻') {
-
-			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
-			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
-
-			let member = reaction.message.guild.members.cache.find(member => member.id == user.id);
-
-			if (memberRole && noMemberRole && member) {
-
-				member.roles.add(noMemberRole);
-				member.roles.remove(memberRole);
 
 			}
 

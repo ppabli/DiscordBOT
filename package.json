@@ -1,5 +1,5 @@
 {
-  "name": "discordbot",
+  "name": "mibot",
   "version": "1.0.0",
   "description": "",
   "main": "MiBOT.js",
@@ -13,7 +13,6 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
-    "mariadb": "^2.3.1",
     "mysql": "^2.18.1",
     "simple-youtube-api": "^5.2.1",
     "string-similarity": "^4.0.1",
