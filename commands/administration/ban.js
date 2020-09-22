@@ -72,7 +72,7 @@ conf = {
 	help: "Ban server user",
 	permits: ["BAN_MEMBERS"],
 	usersID: [],
-	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
+	category: __dirname.split(SEPARATOR).pop()
 
 }
 

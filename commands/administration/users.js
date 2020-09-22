@@ -1,6 +1,6 @@
 run = message => {
 
-	let memberList = LIST.getMembers(message.guild);
+	let memberList = message.guild.members.cache.map(m => m);
 
 	for (member in memberList) {
 
@@ -36,7 +36,7 @@ conf = {
 	help: "Show server users",
 	permits: ["ADMINISTRATOR"],
 	usersID: [],
-	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
+	category: __dirname.split(SEPARATOR).pop()
 
 }
 

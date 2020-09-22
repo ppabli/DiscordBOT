@@ -29,7 +29,7 @@ conf = {
 	help: "Get user info",
 	permits: [],
 	usersID: [],
-	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
+	category: __dirname.split(SEPARATOR).pop()
 
 }
 

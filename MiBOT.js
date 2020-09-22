@@ -1,17 +1,5 @@
 require('./requires');
 
-DOTENV.config();
-CONFIG = process.env;
-
-POOL = MARIADB.createPool({
-
-	host: CONFIG.DDBB_HOST,
-	user: CONFIG.DDBB_USER,
-	password: CONFIG.DDBB_PASSWORD,
-	database: CONFIG.DDBB_BASE
-
-});
-
 BOT = new DISCORD.Client({partials: ['MESSAGE', 'REACTION']});
 
 BOT.login(CONFIG.TOKEN);
@@ -20,7 +8,7 @@ BOT.on('ready', async () => {
 
 	await COMMANDS.loadCommands();
 
-	let serverList = LIST.getServers(BOT);
+	let serverList = BOT.guilds.cache.map(g => g);
 
 	console.log('MiBOT ready');
 	console.log(`Total servers ${serverList.length}`);
@@ -28,7 +16,9 @@ BOT.on('ready', async () => {
 
 	for(server in serverList) {
 
-		console.log(serverList[server].name + " - " + LIST.getMembers(serverList[server]).length);
+		let members = serverList[server].members.cache.map(m => m);
+
+		console.log(serverList[server].name + " - " + members.length);
 
 	}
 
@@ -48,7 +38,7 @@ BOT.on('ready', async () => {
 
 });
 
-BOT.on("message", message => {
+BOT.on("message", async message => {
 
 	if (message.content.indexOf(CONFIG.PREFIX) === 0) {
 
@@ -109,7 +99,10 @@ BOT.on("message", message => {
 
 				commands[command].run(message);
 
-				POOL.query("select code from users where userID = '" + message.author.id + "'").then((res) => POOL.query("insert into commands values (" + 0 + ", '" + command + "', '" +  res[0].code + "', '" + message.guild.name + "', '" + message.channel.name + "',  now())"));
+				let user = await QUERY(`select code from users where userID = '${message.author.id}'`)
+				let userCode = user[0].code;
+
+				QUERY(`insert into commands values (0, '${command}', ${userCode}, '${message.guild.name}', '${message.channel.name}', now())`);
 
 				return;
 
@@ -233,8 +226,8 @@ BOT.on('messageReactionAdd', async (reaction, user) => {
 
 		if (reaction.emoji.name == '👍🏻') {
 
-			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === '586998830164213772');
-			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === '734460546354774119');
+			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
+			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
 
 			let member = reaction.message.guild.members.cache.find(m => m.id == user.id);
 
@@ -280,8 +273,8 @@ BOT.on('messageReactionRemove', async (reaction, user) => {
 
 		if (reaction.emoji.name == '👍🏻') {
 
-			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === '586998830164213772');
-			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === '734460546354774119');
+			let memberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
+			let noMemberRole = reaction.message.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
 
 			let member = reaction.message.guild.members.cache.find(member => member.id == user.id);
 
@@ -374,7 +367,7 @@ BOT.on("roleUpdate", (oldRol, newRol) => {
 
 BOT.on("guildMemberAdd", member => {
 
-	let role = member.guild.roles.cache.find(r => r.id === "734460546354774119");
+	let role = member.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
 	member.roles.add(role);
 
 	let embed = new DISCORD.MessageEmbed()
@@ -388,7 +381,7 @@ BOT.on("guildMemberAdd", member => {
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
-	POOL.query("insert into users values (" + 0 + ", '" + member.user.username + "', '" + member.user.tag + "', '" + member.id + "', now())");
+	QUERY(`insert into users values (0, '${member.user.username}', '${member.user.tag}', '${member.id}', now())`);
 
 });
 
@@ -427,6 +420,6 @@ BOT.on("guildMemberRemove", async member => {
 
 	BOT.guilds.cache.find(g => g.id === member.guild.id).channels.cache.find(c => c.id == CONFIG.LOG_CHANNEL_ID).send(embed);
 
-	POOL.query("delete from users where userID = '" + member.id + "'");
+	QUERY(`delete from users where userID = '${member.id}'`);
 
 });

@@ -48,7 +48,7 @@ conf = {
 	help: "Clear channel messages",
 	permits: ["ADMINISTRATOR"],
 	usersID: [],
-	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
+	category: __dirname.split(SEPARATOR).pop()
 
 }
 

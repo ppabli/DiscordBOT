@@ -1,6 +1,6 @@
 run = message => {
 
-	userList = LIST.getMembers(message.guild);
+	let userList = message.guild.members.cache.map(m => m);
 
 	for (user in userList) {
 
@@ -18,7 +18,7 @@ conf = {
 	help: "Save server users in the database",
 	permits: ["ADMINISTRATOR"],
 	usersID: [CONFIG.OWNER_ID],
-	category: __dirname.split(SEPARATOR)[__dirname.split(SEPARATOR).length - 1]
+	category: __dirname.split(SEPARATOR).pop()
 
 
 }
