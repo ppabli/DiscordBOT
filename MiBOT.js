@@ -342,7 +342,7 @@ BOT.on("roleUpdate", (oldRol, newRol) => {
 
 BOT.on("guildMemberAdd", member => {
 
-	let role = member.guild.roles.cache.find(r => r.id === CONFIG.ROL_MEMBER);
+	let role = member.guild.roles.cache.find(r => r.id === CONFIG.ROL_NOMEMBER);
 	member.roles.add(role);
 
 	let embed = new DISCORD.MessageEmbed()
