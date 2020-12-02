@@ -4,6 +4,8 @@ BOT = new DISCORD.Client({partials: ['MESSAGE', 'REACTION']});
 
 BOT.login(CONFIG.TOKEN);
 
+SERVERS = {};
+
 BOT.on('ready', async () => {
 
 	await COMMANDS.loadCommands();
@@ -19,6 +21,14 @@ BOT.on('ready', async () => {
 		let members = serverList[server].members.cache.map(m => m);
 
 		console.log(serverList[server].name + " - " + members.length);
+
+		serverList[server].channels.cache.find(c => c.id == CONFIG.MUSIC_CHANNEL_ID) ? serverList[server].channels.cache.find(c => c.id == CONFIG.MUSIC_CHANNEL_ID).join() : null;
+
+		SERVERS[serverList[server].id] = {};
+
+		let playlist = new PLAYLIST.Playlist(serverList[server]);
+
+		SERVERS[serverList[server].id]['playlist'] = playlist;
 
 	}
 
@@ -50,6 +60,7 @@ BOT.on("message", async message => {
 
 			let havePermits = false;
 			let haveID = false;
+			let correctChannel = false;
 
 			if (commands[command].conf.permits.length == 0) {
 
@@ -81,7 +92,7 @@ BOT.on("message", async message => {
 
 				for (userID in commands[command].conf.usersID) {
 
-					if (message.author.id === commands[command].conf.usersID[userID]) {
+					if (message.author.id == commands[command].conf.usersID[userID]) {
 
 						haveID = true;
 
@@ -93,7 +104,27 @@ BOT.on("message", async message => {
 
 			}
 
-			if (haveID === true && havePermits === true) {
+			if (commands[command].conf.channelsID.length == 0) {
+
+				correctChannel = true;
+
+			} else {
+
+				for (channelID in commands[command].conf.channelsID) {
+
+					if (message.channel.id == commands[command].conf.channelsID[channelID]) {
+
+						correctChannel = true;
+
+						break;
+
+					}
+
+				}
+
+			}
+
+			if (haveID === true && havePermits === true && correctChannel === true) {
 
 				console.log("Command: " + command + " | Author: " + message.author.tag + " | Server: " + message.guild.name + " | Channel: " + message.channel.name + " | Hour: " + TIME.getActualHour() + " | Day: " + TIME.getActualDay());
 

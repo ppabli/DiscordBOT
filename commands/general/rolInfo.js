@@ -37,6 +37,7 @@ conf = {
 	help: "Get rol info",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

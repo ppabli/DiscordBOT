@@ -18,6 +18,7 @@ conf = {
 	help: "Save server users in the database",
 	permits: ["ADMINISTRATOR"],
 	usersID: [CONFIG.OWNER_ID],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 

@@ -21,6 +21,7 @@ conf = {
 	help: "Bot active time",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

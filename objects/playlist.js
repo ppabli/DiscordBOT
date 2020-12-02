@@ -1,229 +1,210 @@
-const ytdl = require('ytdl-core');
-const queue = new Map();
-const YouTube = require ("simple-youtube-api");
-const youtube = new YouTube(config.GOOGLE_API_KEY);
+class Playlist {
 
-exports.meterCancion = async (bot, message, args) => {
+	server;
+	audioChannel;
+	textChannel;
+	index;
+	connection;
+	dispatcher;
+	songs;
+	status;
+	volume;
 
-	let serverQueue = queue.get(message.guild.id);
+	constructor(server) {
 
-	let nombreCancion = "";
+		this.server = server;
+		this.textChannel = server.channels.cache.find(c => c.id == CONFIG.MUSIC_TEXT_CHANNEL_ID);
+		this.audioChannel = server.channels.cache.find(c => c.id == CONFIG.MUSIC_AUDIO_CHANNEL_ID);
+		this.index = 0;
+		this.songs = [];
+		this.status = 0;
+		this.volume = 5;
 
-	for (contador in args) {
-
-		nombreCancion = nombreCancion + args[contador] + " ";
+		this.joinChannel();
 
 	}
 
-	let video = undefined;
+	reset() {
 
-	try {
+		this.server = server;
+		this.index = 0;
+		this.songs = [];
+		this.status = 0;
+		this.volume = 5;
 
-		video = await yotube.getVideo(nombreCancion, 1);
+	}
 
-	} catch (error) {
+	async joinChannel() {
+
+		if (this.audioChannel) {
+
+			this.connection = await this.audioChannel.join();
+
+		}
+
+	}
+
+	leftChannel() {
+
+		this.server.voiceConnection.disconnect();
+
+	}
+
+	async addSong(songName, tag) {
 
 		try {
 
-			let videos = await youtube.searchVideos(nombreCancion, 1);
-			video = await youtube.getVideoByID(videos[0].id, 1);
+			const songInfo = await YTDL.getInfo(songName);
+
+			let song = new SONG.Song(songInfo.videoDetails.media.song, songInfo.videoDetails.shortDescription, songInfo.videoDetails.media.album, songInfo.url, songInfo.videoDetails.media.artist, tag);
+
+			this.songs.push(song);
+
+			return this.textChannel.send("Song added to the server queue");
 
 		} catch (error) {
 
-			return message.channel.send("No encontre ningun video");
+			return this.textChannel.send("Error adding song. Please try later");
 
 		}
 
 	}
 
-	if (serverQueue) {
+	async play() {
 
-		for (contador in serverQueue.songs) {
+		if (this.songs.length && this.connection) {
 
-			if (serverQueue.songs[contador].url.toString() === ("https://www.youtube.com/watch?v=" + video.id) || serverQueue.songs[contador].title.toString() === video.title.toString()) {
+			this.dispatcher = this.connection.play(YTDL(this.songs[this.index].URL));
 
-				serverQueue.action = "saltar";
-				serverQueue.contador = contador;
-				return serverQueue.dispatcher.end();
+			this.status = "Playing";
+			this.textChannel.send(`Now playing: ${this.songs[this.index].title}`);
+
+			this.dispatcher.setVolumeLogarithmic(this.volume / 5);
+
+			this.dispatcher.on("finish", () => {
+
+				this.next();
+
+			});
+
+		} else {
+
+			return this.textChannel.send("No songs");
+
+		}
+
+	}
+
+	pause() {
+
+		if (this.status == "Playing") {
+	
+			this.status = "Paused"
+			this.dispatcher.end();
+
+		} else {
+
+			return this.textChannel.send("No music running");
+
+		}
+
+	}
+
+	next() {
+
+		if (this.index + 1 >= this.songs.length) {
+
+			this.index = 0;
+
+		} else {
+
+			this.index++;
+
+		}
+
+		this.play();
+
+	}
+
+	previous() {
+
+		if (this.index - 1 < 0) {
+
+			this.index = this.songs.length - 1;
+
+		} else {
+
+			this.index--;
+
+		}
+
+		this.play();
+
+	}
+
+	async generatePlaylist(message) {
+
+		for (song in this.songs) {
+
+			let embed = new DISCORD.MessageEmbed()
+				.setAuthor(BOT.user.tag)
+				.setColor(OTHER.generateColor())
+				.setDescription("Playlist")
+				.addField("Song title: ", this.songs[song].title)
+				.addField("Requested by: ", `<@${this.songs[song].tag}>`)
+				.setFooter(`Requested by: ${message.author.tag}`)
+				.setTimestamp();
+
+			this.textChannel.send(embed);
+
+		}
+
+	}
+
+	async removeSong(index) {
+
+		if (this.songs.length) {
+
+			if (isNaN(index)) {
+
+				for (song in this.songs) {
+
+					if (songs[song].title.test(index)) {
+
+						index = song;
+						break;
+
+					}
+
+				}
 
 			}
 
-		}
+			if (this.index == index) {
 
-	}
+				this.next();
 
-	let song = {
+			}
 
-		title: video.title,
-		url: "https://www.youtube.com/watch?v=" + video.id,
-		requester: message.author.tag,
+			if (index >= this.songs.length) {
 
-	};
+				return this.textChannel.send("Invalid index");
 
-	if (serverQueue === undefined) {
+			}
 
-		const queueConstruct = {
+			let songData = this.songs[index];
 
-			textChannel: message.channel,
-			voiceChannel: message.member.voiceChannel,
-			connection: undefined,
-			dispatcher: undefined,
-			songs: [],
-			contador: 0,
-			action: undefined,
-			status: undefined,
+			this.songs.splice(index, 1);
+			this.textChannel.send(`Song removed from server playlist`);
+
+		} else {
+
+			this.textChannel.send("No songs");
 
 		}
 
-		queue.set(message.guild.id, queueConstruct);
-
-		queueConstruct.songs.push(song);
-
-		queueConstruct.connection = await message.member.voiceChannel.join();
-
-		return require("./playlist").reproducir(bot, message);
-
-	} else {
-
-		serverQueue.songs.push(song);
-
-		let embed = new Discord.RichEmbed()
-		.setAuthor("MiBOT")
-		.setTitle("Playlist de MiBOT")
-		.setColor(require ("../functions/otros").generarColor())
-		.setFooter(`Solicitado por: MiBOT`)
-		.addField("Posicion de la canción: ", " ```" + serverQueue.songs.indexOf(song) + "``` ")
-		.addField("Canción: ", " ```" + song.title + "``` ")
-		.addField("Solicitada por: ", " ```" + song.requester + "``` ")
-		.addField("URL: ", " ```" + song.url + "``` ")
-		.setDescription("Se ha añadido a la playlist: ");
-
-		return message.channel.send(embed);
-
 	}
 
 }
 
-exports.reproducir = (bot, message) => {
-
-	let serverQueue = require ("./playlist").obtenerQueue(message);
-
-	if (!serverQueue) {
-
-		return message.channel.send("No hay ninguna playlist almacenada");
-
-	}
-
-	if (serverQueue.status === "paused") {
-
-		serverQueue.dispatcher.resume();
-
-	}
-	
-	if (serverQueue.songs.length <= 0) {
-
-		queue.set(message.guild.id, undefined);
-		return;
-
-	}
-
-	if (serverQueue.contador >= serverQueue.songs.length) {
-
-		serverQueue.contador = 0;
-
-	}
-
-	if (serverQueue.contador < 0) {
-
-		serverQueue.contador = serverQueue.songs.length - 1;
-
-	}
-
-	let embed = new Discord.RichEmbed()
-	.setAuthor("MiBOT")
-	.setTitle("Playlist de MiBOT")
-	.setColor(require ("../functions/otros").generarColor())
-	.setFooter(`Solicitado por: MiBOT`)
-	.addField("Posicion de la canción: ", " ```" + serverQueue.songs.indexOf(serverQueue.songs[serverQueue.contador]) + "``` ")
-	.addField("Canción: ", " ```" + serverQueue.songs[serverQueue.contador].title + "``` ")
-	.addField("Solicitada por: ", " ```" + serverQueue.songs[serverQueue.contador].requester + "``` ")
-	.addField("URL: ", " ```" + serverQueue.songs[serverQueue.contador].url + "``` ")
-	.setDescription("Se va a reproducir: ");
-
-	message.channel.send(embed);
-
-	serverQueue.status = "playing";
-
-	return serverQueue.dispatcher = serverQueue.connection.playStream(ytdl(serverQueue.songs[serverQueue.contador].url, {filter: 'audioonly'})).on('end', () => {require ("./playlist").siguiente(bot, message)});
-
-}
-
-exports.siguiente = (bot, message) => {
-
-	let serverQueue = require ("./playlist").obtenerQueue(message);
-
-	if (serverQueue.connection === null) {
-
-		return;
-
-	}
-	
-	if (serverQueue.action === "siguiente") {
-
-		serverQueue.action = undefined;
-		serverQueue.contador = serverQueue.contador + 1;
-		return require("./playlist").reproducir(bot, message);
-
-	}
-	
-	if (serverQueue.action === "anterior") {
-
-		serverQueue.action = undefined;
-		serverQueue.contador = serverQueue.contador - 1;
-		return require("./playlist").reproducir(bot, message);
-
-	}
-
-	if (serverQueue.action === "saltar"){
-
-		serverQueue.action = undefined;
-		return require("./playlist").reproducir(bot, message);
-
-	}
-
-	if (serverQueue.action === undefined) {
-
-		serverQueue.contador = serverQueue.contador + 1;
-		return require("./playlist").reproducir(bot, message);
-
-	}
-
-}
-
-exports.obtenerContador = (message) => {
-
-	let serverQueue = require ("./playlist").obtenerQueue(message);
-	return serverQueue.contador;
-
-}
-
-exports.setContador = (message, contador) => {
-
-	let serverQueue = require ("./playlist").obtenerQueue(message);
-	serverQueue.contador = contador;
-	return;
-
-}
-
-exports.obtenerQueue = message => {
-
-	return queue.get(message.guild.id);
-
-}
-
-exports.obtenerInfoCancion = (bot, message) => {
-
-	let serverQueue = require ("./playlist").obtenerQueue(message);
-	return ("cancion: **" + serverQueue.songs[serverQueue.contador].title + "** | Solicitada por: **" + serverQueue.songs[serverQueue.contador].requester + "**. ");
-
-}
+module.exports = {Playlist}

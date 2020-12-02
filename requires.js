@@ -7,7 +7,7 @@ SS = require('string-similarity');
 EXEC = require('child_process').exec;
 OS = require('os');
 UTIL = require('util');
-
+YTDL = require('ytdl-core');
 DOTENV.config();
 CONFIG = process.env;
 
@@ -17,6 +17,8 @@ OTHER = require('./lib/other');
 COMMANDS = require('./lib/commands');
 MESSAGES = require('./lib/messages');
 DB = require('./lib/database');
+PLAYLIST = require('./objects/playlist');
+SONG = require('./objects/Song');
 
 QUERY = UTIL.promisify(DB.query).bind(DB);
 

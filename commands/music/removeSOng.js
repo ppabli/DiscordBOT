@@ -4,7 +4,9 @@ exports.run = async message => {
 
 		let playlist = SERVERS[message.guild.id].playlist;
 
-		playlist.generatePlaylist(message);
+		let index = message.content.slice(CONFIG.PREFIX.length).trim().split(/ +/g).slice(1);
+
+		playlist.removeSong(index);
 
 	} else {
 
@@ -16,8 +18,8 @@ exports.run = async message => {
 
 exports.conf = {
 
-	command: "playlist",
-	help: "Return server playlist",
+	command: "removeSong",
+	help: "Remove song from the server playlist",
 	permits: [],
 	usersID: [],
 	channelsID: [595982947153084426],

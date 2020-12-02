@@ -33,6 +33,7 @@ conf = {
 	help: "Autocomplete the user name",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

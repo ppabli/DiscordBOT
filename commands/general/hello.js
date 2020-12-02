@@ -10,6 +10,7 @@ conf = {
 	help: "Nothing",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

@@ -13,6 +13,7 @@ conf = {
 	help: "Start votation",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

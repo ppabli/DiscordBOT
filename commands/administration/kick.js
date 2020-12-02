@@ -65,6 +65,7 @@ conf = {
 	help: "Kick server user",
 	permits: ["KICK_MEMBERS"],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

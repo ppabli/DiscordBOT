@@ -36,6 +36,7 @@ conf = {
 	help: "Poweroff the computer where MiBOT is running",
 	permits: ["ADMINISTRATOR"],
 	usersID: [CONFIG.OWNER_ID],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

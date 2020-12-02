@@ -27,6 +27,7 @@ conf = {
 	help: "Server info",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

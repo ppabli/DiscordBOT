@@ -4,7 +4,7 @@ exports.run = async message => {
 
 		let playlist = SERVERS[message.guild.id].playlist;
 
-		playlist.generatePlaylist(message);
+		playlist.pause();
 
 	} else {
 
@@ -16,8 +16,8 @@ exports.run = async message => {
 
 exports.conf = {
 
-	command: "playlist",
-	help: "Return server playlist",
+	command: "stopMusic",
+	help: "Stop the music",
 	permits: [],
 	usersID: [],
 	channelsID: [595982947153084426],

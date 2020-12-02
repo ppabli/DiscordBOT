@@ -22,6 +22,7 @@ conf = {
 	help: "Ping info",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

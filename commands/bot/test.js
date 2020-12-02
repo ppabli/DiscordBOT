@@ -14,6 +14,7 @@ conf = {
 	help: "Test command",
 	permits: ["ADMINISTRATOR"],
 	usersID: [CONFIG.OWNER_ID],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

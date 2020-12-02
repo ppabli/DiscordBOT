@@ -34,6 +34,7 @@ conf = {
 	help: "Reboot MiBOT",
 	permits: ["ADMINISTRATOR"],
 	usersID: [CONFIG.OWNER_ID],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

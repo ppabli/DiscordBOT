@@ -94,6 +94,7 @@ conf = {
 	help: "Muestra la ayuda de los comandos",
 	permits: [],
 	usersID: [],
+	channelsID: [],
 	category: __dirname.split(SEPARATOR).pop()
 
 }

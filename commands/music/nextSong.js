@@ -3,8 +3,7 @@ exports.run = async message => {
 	if (SERVERS[message.guild.id]) {
 
 		let playlist = SERVERS[message.guild.id].playlist;
-
-		playlist.generatePlaylist(message);
+		playlist.next();
 
 	} else {
 
@@ -16,8 +15,8 @@ exports.run = async message => {
 
 exports.conf = {
 
-	command: "playlist",
-	help: "Return server playlist",
+	command: "nextSong",
+	help: "Play the next song in server playlist",
 	permits: [],
 	usersID: [],
 	channelsID: [595982947153084426],
